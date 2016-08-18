@@ -1,0 +1,111 @@
+<style>
+    .propertyTDfix {
+        padding-left: 20px;
+    }
+    .propertyDeleteCheckbox {
+        /*display:none;*/
+    }
+    .propertyDeleteCheckbox:checked + table {
+        visibility : collapse;
+        display    : none;
+    }
+</style>
+
+<?php
+    $delete   = $element->get('delete');
+    $deleteId = str_replace('[', '-', str_replace(']', '', $delete->getName()));
+    $delete->setAttributes(array(
+        'class' => 'propertyDeleteCheckbox',
+        'id'    => $deleteId
+    ));
+    echo '<label style="width:auto;padding-right: 10px;" for="'.$deleteId.'">delete</label>';
+    echo $this->formElement($delete, true);
+?>
+
+<table style="margin-left:0px;">
+    <tr>
+        <td rowspan="4">
+            <?='propertyType<br>'. $this->formElement($element->get('propertyType'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('queryName')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('id'), true);?>
+            <?=$this->formElement($element->get('queryName'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('cardinality')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('cardinality'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('updatability')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('updatability'), true);?>
+        </td>
+    </tr>
+    <tr>
+        <td class="propertyTDfix">
+            <?=$element->get('displayName')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('displayName'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('openChoice')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('openChoice'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('required')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('required'), true);?>
+        </td>
+    </tr>
+    <tr>
+        <td class="propertyTDfix">
+            <?=$element->get('localName')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('localName'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('choices')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('choices'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('queryable')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('queryable'), true);?>
+        </td>
+    </tr>
+    <tr>
+        <td class="propertyTDfix">
+            <?=$element->get('localNamespace')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('localNamespace'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('defaultValue')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('defaultValue'), true);?>
+        </td>
+        <td class="propertyTDfix">
+            <?=$element->get('orderable')->getLabel()?>
+        </td>
+        <td>
+            <?=$this->formElement($element->get('orderable'), true);?>
+        </td>
+    </tr>
+</table>
+<hr>

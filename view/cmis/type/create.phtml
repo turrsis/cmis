@@ -1,0 +1,23 @@
+<?=$this->form()->openTag($this->form);?>
+    <table>
+        <?php foreach($form->get('attributes') as $elementName => $element) : ?>
+            <tr>
+                <td>
+                    <?=$element->getLabel();?>
+                </td>
+                <td>
+                    <?=$this->formElement($element, true);?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </table>
+    <hr>
+    <?=$this->formElement($this->form->get('addProperty')->setValue('addProperty'), true)?>
+    <hr>
+    <?=$this->formCollection()->render($this->form->get('propertyDefinitions'), array(
+        'should_wrap'     => false,
+        //'fieldset_helper' => 'cmis/type/edit-property.phtml'
+    ));?>
+    <hr>
+    <?=$this->formElement($this->form->get('save')->setValue('save'), true)?>
+<?=$this->form()->closeTag($this->form);?>

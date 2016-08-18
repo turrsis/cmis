@@ -1,0 +1,38 @@
+<?=$this->form()->openTag($form);?>
+    
+    <table>
+        <?php foreach($form->get('properties') as $elementName => $element) :
+              if ($element->getAttribute('readonly')) {
+                  continue;
+              }
+        ?>
+            <tr>
+                <td>
+                    <?=$element->getLabel();?>
+                </td>
+                <td>
+                    <?=$this->formElement($element, true);?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </table>
+    
+    <?php
+        $notOptional = array_flip(array('properties', 'save'));
+        if ($form->count() - count($notOptional) !== 0) {
+            echo $this->accordion()->openTag('optional');
+            foreach($form as $elementName => $element) {
+                if (isset($notOptional[$elementName])) {
+                    continue;
+                }
+                echo $this->accordion()->tab(
+                    $element->getName(),
+                    $this->formElement($element, true)
+                );
+            }
+            echo $this->accordion()->closeTag();
+        }
+    ?>
+
+    <?=$this->formElement($form->get('save'), false);?>
+<?=$this->form()->closeTag($form);?>

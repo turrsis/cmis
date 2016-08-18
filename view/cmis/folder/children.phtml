@@ -1,0 +1,53 @@
+<table>
+    <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>objectTypeId</th>
+        <th>decsription</th>
+        <th>createdBy</th>
+        <th>creationDate</th>
+        <th>lastModifiedBy</th>
+        <th>lastModificationDate</th>
+        <th>commands</th>
+    </thead>
+    <tbody>
+        <?php foreach($children['objects'] as $child) :?>
+        <tr>
+            <td>
+                <?=$child['properties']['cmis:objectId']?>
+            </td>
+            <td>
+                <a href="<?=$this->url(\Zend\Stdlib\ArrayUtils::merge($references['edit'], ['params'=>["containers"=>["content"=>["object"=>$child['properties']['cmis:objectId']]]]]));?>"><?=$child['properties']['cmis:name']?></a>
+            </td>
+            <td>
+                <?=$child['properties']['cmis:objectTypeId']?>
+            </td>
+            <td>
+                <?=$child['properties']['cmis:description']?>
+            </td>
+            <td>
+                <?=$child['properties']['cmis:createdBy']?>
+            </td>
+            <td>
+                <?=$child['properties']['cmis:creationDate']?>
+            </td>
+            <td>
+                <?=$child['properties']['cmis:lastModifiedBy']?>
+            </td>
+            <td>
+                <?=$child['properties']['cmis:lastModificationDate']?>
+            </td>
+            <td>
+                delete, rendition, relationships, Allowable Actions, ACL, typeInfo
+            </td>
+        </tr>
+        <?php endforeach;?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="<?=count($children['objects'])?>" style="text-align: center">
+                <a class="aButton" href="<?=$this->url($references['create']);?>">CreateObject</a>
+            </td>
+        </tr>
+    </tfoot>
+</table>

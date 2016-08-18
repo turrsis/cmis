@@ -1,0 +1,39 @@
+<table>
+    <thead>
+        <th>id</th>
+        <th>queryName</th>
+        <th>localName</th>
+        <th>displayName</th>
+        <th>commands</th>
+    </thead>
+    <tbody>
+        <?php 
+        foreach($types as $type) :?>
+            <tr>
+                <td>
+                    <?=$type['id']?>
+                </td>
+                <td>
+                    <?=str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $types->getDepth())?>
+                    <a href="<?=$this->url(["params"=>["containers"=>["content"=>["controller"=>"cmis-type","action"=>"edit","type"=>$type['id']]]]]);?>"><?=$type['queryName']?></a>
+                </td>
+                <td>
+                    <?=$type['localName']?>
+                </td>
+                <td>
+                    <?=$type['displayName']?>
+                </td>
+                <td>
+                    <a href="<?=$this->url(["params"=>["containers"=>["content"=>["controller"=>"cmis-type","action"=>"delete","type"=>$type['id']]]]]);?>">delete</a>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5" style="text-align: center">
+                <a class="aButton" href="<?=$this->url($references['create']);?>">CreateType</a>
+            </td>
+        </tr>
+    </tfoot>
+</table>

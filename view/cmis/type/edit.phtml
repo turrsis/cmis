@@ -1,0 +1,108 @@
+<?=$this->form()->openTag($this->form);?>
+<table>
+    <tr>
+        <td>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Attributes</th>
+                    </tr>
+                </thead>
+                <?php foreach($form as $elementName => $element) : if ($element->getOption('isAttribute')) : ?>
+                    <tr>
+                        <td>
+                            <?=$element->getLabel();?>
+                        </td>
+                        <td>
+                            <?=$this->formElement($element, true);?>
+                        </td>
+                    </tr>
+                <?php endif; endforeach;?>
+            </table>
+        </td>
+        <td style="vertical-align: top">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="5">Parent properties</th>
+                    </tr>
+                    <tr>
+                        <th>queryName</th>
+                        <th>displayName</th>
+                        <th>localName</th>
+                        <th>localNamespace</th>
+                        <th>defaultValue</th>
+                        <th></th>
+                    </tr>
+                    
+                </thead>
+                <?php foreach($parentType['propertyDefinitions'] as $propertyName => $property) : ?>
+                    <tr>
+                        <td>
+                            <?=$property['queryName']?>
+                        </td>
+                        <td>
+                            <?=$property['displayName']?>
+                        </td>
+                        <td>
+                            <?=$property['localName']?>
+                        </td>
+                        <td>
+                            <?=$property['localNamespace']?>
+                        </td>
+                        <td>
+                            <?=$property['defaultValue']?>
+                        </td>
+                        <td>
+                            <label class="typePropertyDetails">details...</label>
+                            <table class="typePropertyDetailsPopUp">
+                                <tr>
+                                    <td>cardinality</td>
+                                    <td><?=$property['cardinality'];?></td>
+                                </tr>
+                                <tr>
+                                    <td>openChoice</td>
+                                    <td><?=$property['openChoice']?></td>
+                                </tr>
+                                <tr>
+                                    <td>choices</td>
+                                    <td><?=$property['choices'];?></td>
+                                </tr>
+                                <tr>
+                                    <td>updatability</td>
+                                    <td><?=$property['updatability'];?></td>
+                                </tr>
+                                <tr>
+                                    <td>required</td>
+                                    <td><?=$property['required'];?></td>
+                                </tr>
+                                <tr>
+                                    <td>queryable</td>
+                                    <td><?=$property['queryable'];?></td>
+                                </tr>
+                                <tr>
+                                    <td>orderable</td>
+                                    <td><?=$property['orderable'];?></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            </table>
+        </td>
+    </tr>
+</table>
+    <hr>
+    <?=$this->formElement($this->form->get('addProperty')->setValue('addProperty'), true)?>
+    <hr>
+    <?php
+        $cHelper = $this
+                ->formCollection()
+                ->setShouldWrap(true)
+                ->setWrapper('<table%4$s><thead><th>delete</th><th>type</th><th>queryName</th><th>displayName</th><th>localName</th><th>localNamespace</th><th>defaultValue</th></thead>%2$s%1$s%3$s</table>')
+                ->setFieldsetHelper($this->formRow()->setPartial('cmis/type/edit-property.phtml'));
+        echo $cHelper->render($form->get('propertyDefinitions'));
+    ?>
+    <hr>
+    <?=$this->formElement($this->form->get('save')->setValue('save'), true)?>
+<?=$this->form()->closeTag($this->form);?>

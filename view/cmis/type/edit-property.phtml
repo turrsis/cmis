@@ -1,0 +1,98 @@
+<style>
+    .propertyTDfix {
+        padding-left: 20px;
+    }
+    .propertyDeleteCheckbox {
+        /*display:none;*/
+    }
+    .propertyDeleteCheckbox:checked + table {
+        visibility : collapse;
+        display    : none;
+    }
+
+    
+    .typePropertyDetails:hover {
+        color:blue;
+        margin-bottom: 0px;
+    }
+    .typePropertyDetails:hover + table:first-of-type {
+        display   : block;
+    }
+    .typePropertyDetailsPopUp {
+        display   : none;
+        position  : absolute;
+        z-index   : 1000;
+        margin-left: 20px;
+        border    : blue solid 2px;
+        background: none repeat scroll 0 0 #FFFFFF;
+    }
+    .typePropertyDetailsPopUp:hover {
+        display   : block;
+    }
+</style>
+
+<tr>
+    <td class="propertyTDfix">
+        <?php
+            $delete   = $element->get('delete');
+            $deleteId = str_replace('[', '-', str_replace(']', '', $delete->getName()));
+            $delete->setAttributes(array(
+                'class' => 'propertyDeleteCheckbox',
+                'id'    => $deleteId
+            ));
+            echo $this->formElement($delete, true);
+        ?>
+    </td>
+    <td class="propertyTDfix">
+        <?=$this->formElement($element->get('id'), true);?>
+        <?=$this->formElement($element->get('propertyType'), true);?>
+    </td>
+    <td class="propertyTDfix">
+        <?=$this->formElement($element->get('queryName'), true);?>
+    </td>
+    <td class="propertyTDfix">
+        <?=$this->formElement($element->get('displayName'), true);?>
+    </td>
+    <td class="propertyTDfix">
+        <?=$this->formElement($element->get('localName'), true);?>
+    </td>
+    <td class="propertyTDfix">
+        <?=$this->formElement($element->get('localNamespace'), true);?>
+    </td>
+    <td class="propertyTDfix">
+        <?=$this->formElement($element->get('defaultValue'), true);?>
+    </td>
+    <td>
+        <label class="typePropertyDetails">details...</label>
+        <table class="typePropertyDetailsPopUp">
+            <tr>
+                <td><?=$element->get('cardinality')->getLabel()?></td>
+                <td><?=$this->formElement($element->get('cardinality'), true);?></td>
+            </tr>
+            <tr>
+                <td><?=$element->get('openChoice')->getLabel()?></td>
+                <td><?=$this->formElement($element->get('openChoice'), true);?></td>
+            </tr>
+            <tr>
+                <td><?=$element->get('choices')->getLabel()?></td>
+                <td><?=$this->formElement($element->get('choices'), true);?></td>
+            </tr>
+            <tr>
+                <td><?=$element->get('updatability')->getLabel()?></td>
+                <td><?=$this->formElement($element->get('updatability'), true);?></td>
+            </tr>
+            <tr>
+                <td><?=$element->get('required')->getLabel()?></td>
+                <td><?=$this->formElement($element->get('required'), true);?></td>
+            </tr>
+            <tr>
+                <td><?=$element->get('queryable')->getLabel()?></td>
+                <td><?=$this->formElement($element->get('queryable'), true);?></td>
+            </tr>
+            <tr>
+                <td><?=$element->get('orderable')->getLabel()?></td>
+                <td><?=$this->formElement($element->get('orderable'), true);?></td>
+            </tr>
+        </table>
+    </td>
+</tr>
