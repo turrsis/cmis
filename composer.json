@@ -1,0 +1,30 @@
+{
+    "name": "turrsis/turrsis-cmis",
+    "description": " ",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "cmis"
+    ],
+    "homepage": "https://github.com/turrsis/turrsis-cmis",
+    "autoload": {
+        "psr-4": {
+        }
+    },
+    "require": {
+        "php": "^5.5 || ^7.0"
+    },
+    "require-dev": {
+    },
+    "suggest": {
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        }
+    }
+}
