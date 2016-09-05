@@ -1,7 +1,7 @@
 <?php
-namespace Cmis\Controller;
+namespace Tursis\Cmis\Controller;
 
-use Cmis\Form\Object\AbstractObject as AbstractCmisObjectForm;
+use Tursis\Cmis\Form\Object\AbstractObject as AbstractCmisObjectForm;
 
 class ObjectController extends AbstractCmisController
 {

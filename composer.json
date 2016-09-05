@@ -8,6 +8,7 @@
     "homepage": "https://github.com/turrsis/turrsis-cmis",
     "autoload": {
         "psr-4": {
+            "Turrsis\\Cmis\\": "src/"
         }
     },
     "require": {

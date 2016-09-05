@@ -1,30 +1,37 @@
 <?php
-namespace CmisTest\Cmis\Cmis\Services\Rdb;
+namespace TurrsisTest\Cmis\Cmis\Services\Rdb;
 
-class RepositoryEngineIntegrationTest extends AbstractEngineTest
+use Zend\Stdlib\ArrayUtils;
+use TurrsisTest\Cmis\AbstractTest;
+
+class RepositoryEngineIntegrationTest extends AbstractTest
 {
     /**
-     * @var \Cmis\Cmis\Services\Rdb\ObjectsEngine
+     * @var \Turrsis\Cmis\Repository
      */
-    protected $objectEngine;
+    protected $repository;
 
     /**
-     * @var \Cmis\Cmis\Services\Rdb\RepositoryEngine
+     * @param string $repositoryName
+     * @param array $config
+     * @return \Turrsis\Cmis\Services\Rdb\RepositoryEngine
      */
-    protected $repositoryEngine;
-    
-    public static function setUpBeforeClass() {
-        static::$repository = self::createRepository();
-    }
-    
-    public function setUp()
+    public function getRepositoryEngine($repositoryName = 'cmis:repo:repo1', $config = [])
     {
-        $this->objectEngine     = $this->readAttribute(static::$repository, 'objectsEngine');
-        $this->repositoryEngine = $this->readAttribute(static::$repository, 'repositoryEngine');
+        $config = ArrayUtils::merge(['services' => [
+            'db:test' => self::$currentAdapter,
+        ]], $config);
+        $this->repository = $this->getServiceManager($config)->get($repositoryName);
+        $repositoryService = $this->repository->getRepositoryService();
+        return $this->readAttribute($repositoryService, 'repositoryEngine');
     }
 
     public function testCreateType()
     {
+        //$this->initDb('mysql', null);
+        self::initDatabase();
+        $repositoryEngine = $this->getRepositoryEngine();
+
         $type1 = [
             'id'                       => 'cmis:item1',
             'parentId'                 => 'cmis:item',
@@ -46,11 +53,12 @@ class RepositoryEngineIntegrationTest extends AbstractEngineTest
                 ],
             ]
         ];
-        $object1 = $this->repositoryEngine->createType($type1);
-        
+
+        $object1 = $repositoryEngine->createType($type1);
+
         $this->assertArraySubset($type1, $object1);
         
-        $metadata = new \Zend\Db\Metadata\Metadata(self::$dbAdapter);
+        $metadata = new \Zend\Db\Metadata\Metadata(self::$currentAdapter);
         $typeTable = $metadata->getTable('cmis_item1');
         $typeTableColumns = $typeTable->getColumns();
         
@@ -80,7 +88,7 @@ class RepositoryEngineIntegrationTest extends AbstractEngineTest
                 ],
             ]
         ];
-        $object2 = $this->repositoryEngine->createType($type2);
+        $object2 = $repositoryEngine->createType($type2);
         $this->assertArraySubset($type2, $object2);
         
         $type3 = [
@@ -104,13 +112,15 @@ class RepositoryEngineIntegrationTest extends AbstractEngineTest
                 ],
             ]
         ];
-        $object3 = $this->repositoryEngine->createType($type3);
+        $object3 = $repositoryEngine->createType($type3);
         $this->assertArraySubset($type3, $object3);
     }
     
     public function testGetTypeChildren()
     {
-        $children = $this->repositoryEngine->getTypeChildren('cmis:item');
+        $repositoryEngine = $this->getRepositoryEngine();
+
+        $children = $repositoryEngine->getTypeChildren('cmis:item');
         $this->assertArraySubset(
             [
                 'cmis:item1' => ['id' => 'cmis:item1'],
@@ -122,7 +132,9 @@ class RepositoryEngineIntegrationTest extends AbstractEngineTest
 
     public function testGetTypeDescendants()
     {
-        $descendants = $this->repositoryEngine->getTypeDescendants('cmis:item');
+        $repositoryEngine = $this->getRepositoryEngine();
+
+        $descendants = $repositoryEngine->getTypeDescendants('cmis:item');
         
         $this->assertCount(2, $descendants);
         $this->assertCount(1, $descendants['cmis:item2']['children']);
@@ -141,12 +153,14 @@ class RepositoryEngineIntegrationTest extends AbstractEngineTest
         );
         $this->assertEquals(
             [], 
-            $this->repositoryEngine->getTypeDescendants('cmis:item1')
+            $repositoryEngine->getTypeDescendants('cmis:item1')
         );
     }
 
     public function testUpdateType()
     {
+        $repositoryEngine = $this->getRepositoryEngine();
+
         $type = [
             'id'                       => 'cmis:item1',
             'parentId'                 => 'cmis:item',
@@ -180,38 +194,44 @@ class RepositoryEngineIntegrationTest extends AbstractEngineTest
                 ],
             ]
         ];
-        $updatedType = $this->repositoryEngine->updateType($type);
+        $updatedType = $repositoryEngine->updateType($type);
         $this->assertArraySubset($type, $updatedType);
     }
 
     public function testDeleteType()
     {
-        $this->repositoryEngine->deleteType('cmis:item1');
-        $this->assertNull($this->repositoryEngine->getTypeDefinition('cmis:item1'));
+        $repositoryEngine = $this->getRepositoryEngine();
+
+        $repositoryEngine->deleteType('cmis:item1');
+        $this->assertNull($repositoryEngine->getTypeDefinition('cmis:item1'));
         $this->markTestIncomplete('incomplete');
     }
 
     public function testDeleteType_WithSubtypes()
     {
         $this->setExpectedException(
-            'Cmis\Cmis\Exception\Constraint',
+            'Turrsis\Cmis\Exception\Constraint',
             '"cmis:item2" type has a sub-type'
         );
-        $this->repositoryEngine->deleteType('cmis:item2');
+        $repositoryEngine = $this->getRepositoryEngine();
+        $repositoryEngine->deleteType('cmis:item2');
     }
     
     public function testDeleteType_WithObjectExist()
     {
-        self::$repository->getObjectService()->createItem([
+        $repository = $this->getRepository();
+        $repositoryEngine = $this->readAttribute($repository->getRepositoryService(), 'repositoryEngine');
+
+        $repository->getObjectService()->createItem([
             'cmis:objectTypeId' => 'cmis:item3',
             'cmis:name'         => 'testDeleteType_WithObjectExist',
             'cmis:description'  => 'testDeleteType_WithObjectExist',
         ]);
         $this->setExpectedException(
-            'Cmis\Cmis\Exception\Constraint',
+            'Turrsis\Cmis\Exception\Constraint',
             '1 objects of "cmis:item2" type exist in the repository'
         );
-        $this->repositoryEngine->deleteType('cmis:item2');
+        $repositoryEngine->deleteType('cmis:item2');
     }
 
     public function testGetTypeDefinition()
@@ -228,6 +248,4 @@ class RepositoryEngineIntegrationTest extends AbstractEngineTest
     {
         $this->markTestIncomplete('incomplete');
     }
-
-    
 }

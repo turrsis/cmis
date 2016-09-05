@@ -1,5 +1,5 @@
 <?php
-namespace Cmis\Controller;
+namespace Tursis\Cmis\Controller;
 
 use Zend\Stdlib\ArrayTreeIterator;
 

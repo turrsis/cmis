@@ -4,7 +4,7 @@ namespace Cmis\Form\Element;
 use Zend\Form\Element\SelectTree;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
-use Zend\Stdlib\ArrayUtils;
+use Turrsis\Cmis\Utils\ArrayUtils;
 
 class FolderId extends SelectTree implements ServiceLocatorAwareInterface
 {

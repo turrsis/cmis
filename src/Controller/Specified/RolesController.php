@@ -1,7 +1,7 @@
 <?php
-namespace Cmis\Controller\Specified;
+namespace Tursis\Cmis\Controller\Specified;
 
-use Cmis\Controller\AbstractCmisController;
+use Tursis\Cmis\Controller\AbstractCmisController;
 
 class RolesController extends AbstractCmisController
 {

@@ -7,7 +7,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Tgs\Form\Traits\FormPostValidTrait;
 use Zend\Form\FormInterface;
-use Zend\Stdlib\ArrayUtils;
+use Turrsis\Cmis\Utils\ArrayUtils;
 
 class AbstractType extends Form implements ServiceLocatorAwareInterface
 {

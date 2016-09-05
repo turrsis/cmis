@@ -1,7 +1,7 @@
 <?php
-namespace Cmis\Controller;
+namespace Tursis\Cmis\Controller;
 
-use Cmis\Cmis\Types\Properties;
+use Tursis\Cmis\Types\Properties;
 use Zend\Stdlib\ArrayTreeIterator;
 
 class TypeController extends AbstractCmisController
